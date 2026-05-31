@@ -62,6 +62,7 @@ router.post('/login', async (request, response) => {
       }
     });
   } catch (error) {
+    console.error('LOGIN ERROR:', error); // ADDED LOGGING
     response.status(500).json({
       ok: false,
       message: 'Login failed',
@@ -109,6 +110,7 @@ router.post('/register', async (request, response) => {
       userId: result.insertId
     });
   } catch (error) {
+    console.error('REGISTER ERROR:', error); // ADDED LOGGING
     response.status(500).json({
       ok: false,
       message: 'Registration failed',

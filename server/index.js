@@ -33,6 +33,7 @@ app.get('/api/db-test', async (req, res) => {
     const [rows] = await pool.query('SELECT 1 AS ok, NOW() AS serverTime');
     res.json({ ok: true, database: rows[0] });
   } catch (error) {
+    console.error('Database Test Error:', error);
     res.status(500).json({
       ok: false,
       message: 'Database connection failed',
@@ -48,6 +49,12 @@ app.use(express.static(distPath));
 // 3. Catch-all: Use Regex compatible with Express 5 to serve index.html for non-API routes
 app.get(/^(?!\/api).+/, (req, res) => {
   res.sendFile(path.join(distPath, 'index.html'));
+});
+
+// Global Error Handler for Logging
+app.use((err, req, res, next) => {
+  console.error('Global Error Handler:', err);
+  res.status(500).json({ ok: false, message: 'Internal Server Error', error: err.message });
 });
 
 // 4. Start the server on 0.0.0.0
