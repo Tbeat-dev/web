@@ -2,7 +2,7 @@ import 'dotenv/config';
 import cors from 'cors';
 import express from 'express';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from 'url';      
 import { pool } from './db.js';
 import authRouter from './routes/auth.js';
 import userRouter from './routes/user.js';
@@ -11,24 +11,29 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const port = Number(process.env.API_PORT ?? 4000);
-const clientOrigin = process.env.CLIENT_ORIGIN ?? 'http://127.0.0.1:3000';
 
-app.use(cors({ origin: clientOrigin }));
+// Render requires the PORT environment variable and binding to 0.0.0.0
+const port = process.env.PORT || process.env.API_PORT || 4000;
+
+// CORS: Allow Render domain or all for connectivity
+app.use(cors());
+
 app.use(express.json());
+
+// 1. API Routes
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 
-app.get('/api/health', (request, response) => {
-  response.json({ ok: true, service: 'newweb-api' });
+app.get('/api/health', (req, res) => {
+  res.json({ ok: true, service: 'newweb-api', timestamp: new Date().toISOString() });
 });
 
-app.get('/api/db-test', async (request, response) => {
+app.get('/api/db-test', async (req, res) => {
   try {
     const [rows] = await pool.query('SELECT 1 AS ok, NOW() AS serverTime');
-    response.json({ ok: true, database: rows[0] });
+    res.json({ ok: true, database: rows[0] });
   } catch (error) {
-    response.status(500).json({
+    res.status(500).json({
       ok: false,
       message: 'Database connection failed',
       error: error.message
@@ -36,16 +41,16 @@ app.get('/api/db-test', async (request, response) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`API server running at http://127.0.0.1:${port}`);
-});
-
-// Phục vụ frontend tĩnh trong môi trường Production
-// Đặt sau tất cả các route API
+// 2. Serve static files from the 'dist' directory
 const distPath = path.join(__dirname, '../dist');
 app.use(express.static(distPath));
 
-// Catch-all: Mọi request không phải API sẽ trả về index.html để React Router xử lý
-app.get(/.*/, (req, res) => {
+// 3. Catch-all: Use Regex compatible with Express 5 to serve index.html for non-API routes
+app.get(/^(?!\/api).+/, (req, res) => {
   res.sendFile(path.join(distPath, 'index.html'));
+});
+
+// 4. Start the server on 0.0.0.0
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server is running on port ${port}`);
 });
