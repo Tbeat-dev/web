@@ -1,12 +1,12 @@
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import About from './pages/About.jsx';
 import Home from './pages/Home.jsx';
-import Project from './pages/project.jsx';
-import History from './pages/History.jsx';
+import Project from './pages/project.jsx';        
+import History from './pages/History.jsx';        
 import StoryDetail from './pages/StoryDetail.jsx';
-import Download from './pages/Dowload.jsx';
+import Download from './pages/Dowload.jsx';       
 import Login from './pages/Login.jsx';
-import Register from './pages/Register.jsx';
+import Register from './pages/Register.jsx';      
 import Dashboard from './pages/Dashboard.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import Icon from './components/Icon.jsx';
@@ -21,10 +21,10 @@ function App() {
     <BrowserRouter>
       <main className="app-shell">
         <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline 
+          autoPlay
+          loop
+          muted
+          playsInline
           preload="auto"
           className="background-video"
           src={backgroundVideo}
