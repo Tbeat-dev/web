@@ -1,0 +1,435 @@
+:root {
+  scroll-behavior: smooth;
+  color: #f3f4f6;
+  background: #000;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.story-chapter-fade {
+  opacity: 0; /* Bắt đầu ẩn để animation chạy */
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* Hiệu ứng hiện dần toàn bộ trang khi load/f5 */
+@keyframes pageFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.page-entry-fade {
+  animation: pageFadeIn 1s ease-out forwards;
+}
+
+/* Hiệu ứng Hover cho thẻ chương truyện */
+.chapter-card {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+.chapter-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(255, 215, 0, 0.2);
+  border-color: rgba(255, 215, 0, 0.5) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.chapter-card:hover h3 {
+  color: gold !important;
+}
+
+.chapter-card:hover p {
+  transform: translateX(5px);
+  transition: transform 0.3s ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.background-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  pointer-events: none;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: transparent; /* Phải để trong suốt để thấy video phía sau */
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+.app-shell {
+  min-height: 100vh;
+  padding: 32px;
+  background: rgba(0, 0, 0, 0.65); /* Làm tối hơn để dễ đọc chữ */
+}
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  max-width: none;
+  margin: -32px -32px 80px;
+  padding: 16px 32px;
+  overflow-x: auto;
+  background: rgba(109, 97, 97, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+}
+
+.nav a {
+  flex: 0 0 auto;
+  color: #ffffff;
+  background: rgba(12, 11, 11, 0.1);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.nav a:hover {
+  color: #ffffff;
+  background: rgba(67, 177, 177, 0.8);
+}
+
+.nav-auth {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: auto;
+}
+
+.user-name {
+  color: gold;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+}
+
+.logout-button {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(112, 98, 98, 0.4);
+  color: #f8f8f8;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logout-button:hover {
+  background: #922020;
+  color: white;
+}
+
+.login-link {
+  margin-left: auto;
+}
+
+.dashboard-link {
+  color: gold !important;
+  font-weight: 700 !important;
+  font-size: 0.95rem !important;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+  background: rgba(255, 215, 0, 0.08) !important;
+  border: 1px solid rgba(255, 215, 0, 0.2) !important;
+  border-radius: 8px;
+  padding: 8px 14px !important;
+  text-decoration: none;
+  transition: all 0.2s !important;
+}
+
+.dashboard-link:hover {
+  background: rgba(255, 215, 0, 0.18) !important;
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+  transform: translateY(-1px);
+}
+
+.intro {
+  width: min(720px, 100%);
+  margin-inline: auto;
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  animation: fantasyGlow 5s linear infinite;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+@keyframes fantasyGlow {
+  0% {
+    color: gold;
+    text-shadow: 0 0 10px gold;
+  }
+
+  50% {
+    color: cyan;
+    text-shadow: 0 0 15px cyan;
+  }
+
+  100% {
+    color: purple;
+    text-shadow: 0 0 10px purple;
+  }
+}
+
+h1 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+p {
+  color: #e5e7eb;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+code {
+  color: #111827;
+  background: #e5e7eb;
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+.login-page {
+  display: grid;
+  place-items: center;
+  min-height: calc(100vh - 180px);
+  padding: 20px;
+}
+
+.login-card {
+  width: min(440px, 100%);
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.login-header {
+  margin-bottom: 32px;
+}
+
+.login-header h1 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.login-header p {
+  font-size: 0.95rem;
+  color: #9ca3af;
+}
+
+.login-form {
+  display: grid;
+  gap: 20px;
+}
+
+.form-field {
+  display: grid;
+  gap: 8px;
+  color: #e5e7eb;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.form-field input {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 14px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.form-field input:focus {
+  border-color: #43b1b1;
+  background: rgba(255, 255, 255, 0.1);
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(67, 177, 177, 0.2);
+}
+
+.login-options {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  color: #9ca3af;
+  font-size: 0.85rem;
+}
+
+.remember-option {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.login-options a,
+.signup-text a {
+  color: #43b1b1;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login-options a:hover {
+  text-decoration: underline;
+}
+
+.login-button {
+  border: 0;
+  border-radius: 12px;
+  padding: 14px;
+  color: #ffffff;
+  background: #43b1b1;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.login-button:hover {
+  background: #38a3a3;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(67, 177, 177, 0.3);
+}
+
+.login-button:active {
+  transform: translateY(0);
+}
+
+.login-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.login-message {
+  margin: 0;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.login-message.success {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.login-message.error {
+  color: #e4d6d6;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.signup-text {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+@media (max-width: 768px) {
+  .app-shell {
+    padding: 20px;
+  }
+
+  .nav {
+    gap: 8px;
+    margin: -20px -20px 48px;
+    padding: 12px 20px;
+  }
+
+  .nav a {
+    padding: 9px 12px;
+    font-size: 0.875rem;
+  }
+
+  .login-link {
+    margin-left: 16px;
+  }
+
+  h1 {
+    font-size: 2.25rem;
+    line-height: 1.1;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+
+  .login-page {
+    min-height: calc(100vh - 120px);
+  }
+}
+
+@media (max-width: 420px) {
+  .app-shell {
+    padding: 16px;
+  }
+
+  .nav {
+    margin: -16px -16px 40px;
+    padding: 10px 16px;
+  }
+
+  h1 {
+    font-size: 1.875rem;
+  }
+
+  .login-card {
+    padding: 24px;
+  }
+
+  .login-options {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
